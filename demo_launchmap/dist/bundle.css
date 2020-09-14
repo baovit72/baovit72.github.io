@@ -1,0 +1,141 @@
+body {
+  color: #f8f8f8;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 100%; }
+
+h1 {
+  color: #f8f8f8;
+  font-family: helvetica; }
+
+.card {
+  width: 400px;
+  margin: 12px;
+  box-shadow: 0 0 11px 0 rgba(0, 0, 0, 0.164); }
+
+.panel {
+  background-color: #8da6b675;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  min-height: 100vh;
+  padding: 30px 10px;
+  align-content: flex-start; }
+
+.page-content {
+  display: flex; }
+
+.sidebar {
+  background-color: white;
+  width: 165px;
+  padding-top: 50px; }
+
+.sidebar_item {
+  padding: 5px 10px;
+  margin-left: auto;
+  width: 70%;
+  text-align: center;
+  cursor: pointer;
+  color: rgba(128, 128, 128, 0.753); }
+
+.sidebar_add {
+  background-color: #efad19;
+  border: 1px solid #0000001a;
+  color: white;
+  font-weight: 700;
+  border-radius: 5px;
+  width: 40%;
+  font-size: 12px;
+  white-space: nowrap;
+  width: auto;
+  padding: 2px 5px;
+  max-width: 50%;
+  margin-right: 10%;
+  margin-bottom: 15px; }
+
+.sidebar_item--selected {
+  background-color: #7cdfc196;
+  color: #146fac; }
+
+.card_title-icon {
+  color: #146facad;
+  font-size: 20px !important;
+  margin-right: 10px; }
+
+.card_title {
+  color: rgba(0, 0, 0, 0.432);
+  font-weight: 800;
+  padding: 15px 10px;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.151); }
+
+.card_input {
+  margin: 10px 15px; }
+
+.card_input-title {
+  margin: 10px 0;
+  font-size: 12px;
+  font-weight: 700;
+  color: #000000ba;
+  margin-bottom: 0; }
+
+.card_input-area {
+  width: 100%;
+  position: relative; }
+
+.card_input-area > textarea {
+  border: none;
+  overflow: auto;
+  outline: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  resize: none;
+  width: 100%;
+  z-index: 2;
+  position: relative;
+  background: transparent;
+  padding: 10px 0; }
+
+.card_input-area > textarea::placeholder {
+  color: transparent !important; }
+
+.card_input-area > textarea:hover::placeholder {
+  color: gray !important; }
+
+.card_input-area > textarea:hover {
+  background: white; }
+
+.card_input-area > textarea::-webkit-scrollbar {
+  display: none; }
+
+.card_input-area > div {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 10px; }
+
+.card_input-area > div > div {
+  flex: 1;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.384); }
+
+.card_input-area > textarea[value] {
+  background: white; }
+
+.card_input-area > textarea:not(:placeholder-shown) {
+  background: white; }
+
+.card_save {
+  width: 100px;
+  margin: 15px;
+  background: transparent;
+  margin-left: auto;
+  border: 1px solid #589dc7;
+  color: #589dc7; }
+
+/*# sourceMappingURL=bundle.css.map*/
