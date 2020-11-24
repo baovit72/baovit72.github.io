@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Phake Data</title>
+    <style>
+      textarea {
+        width: 80vw;
+      }
+      * {
+        margin: 10px 10px;
+      }
+      button {
+        padding: 5px 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <center>
+      <textarea id="input" rows="10"></textarea>
+      <br />
+      <button onclick="exec();">button</button>
+      <br />
+      <textarea id="output" rows="10"></textarea>
+    </center>
+    <script>
+      /*
+          {
+                "rec": 156,
+                "independents": {
+                    "CN": {
+                        "varNum": 4,
+                        "dis": [49,138,234,144,59]
+                    },
+                    "TT": {
+                        "varNum": 6,
+                        "dis": [38,150,352,261,135]
+                    },
+                    "TL": {
+                        "varNum": 4,
+                        "dis": [21,135,236,170,62]
+                    }
+                },
+                "dependents": {
+                    "TTH": {
+                        "varNum": 4,
+                        "dis": [31,121,249,163,60]
+                    }
+                }
+        }
+        */
+      const inputElem = document.getElementById("input");
+      inputElem &&
+        (inputElem.value =
+          '{ "rec": 156, "independents": { "CN": { "varNum": 4, "dis": [49,138,234,144,59] }, "TT": { "varNum": 6, "dis": [38,150,352,261,135] }, "TL": { "varNum": 4, "dis": [21,135,236,170,62] } }, "dependents": { "TTH": { "varNum": 4, "dis": [31,121,249,163,60] } } }');
+
+      function getInput() {
+        const inputElem = document.getElementById("input");
+        const value = (inputElem && inputElem.value) || "{}";
+        try {
+          return JSON.parse(value);
+        } catch (e) {
+          console.log(e);
+          return {};
+        }
+      }
+      function isValidInput(data) {
+        const dependents = data.dependents;
+        const independents = data.independents;
+        const rec = data.rec;
+        for (let label in dependents) {
+          if (
+            !dependents[label].dis ||
+            dependents[label].dis.reduce((acc, i) => acc + i) % rec !== 0
+          ) {
+            return false;
+          }
+        }
+        for (let label in independents) {
+          if (
+            !independents[label].dis ||
+            independents[label].dis.reduce((acc, i) => acc + i) % rec !== 0
+          ) {
+            return false;
+          }
+        }
+        return true;
+      }
+      function likertTotal(dis) {
+        console.log(dis);
+        let lowTotal = 0;
+        let highTotal = 0;
+        if (!dis || !dis.length || dis.length < 2) return null;
+        console.log("do count");
+        const indexHolder = Math.floor(dis.length / 2);
+        dis.forEach((item, index) => {
+          if (index <= indexHolder) lowTotal += item;
+          if (
+            (dis.length % 2 === 0 && index > indexHolder) ||
+            (dis.length % 2 !== 0 && index >= indexHolder)
+          ) {
+            highTotal += item;
+          }
+        });
+        return { lowTotal, highTotal };
+      }
+      function isDataGoodPortion(data, highCount) {
+        const dependents = data.dependents;
+        const independents = data.independents;
+        const rec = data.rec;
+        for (let label in dependents) {
+          const dependent = dependents[label];
+          const idealHighTotal = highCount * dependent.varNum;
+          const lTotal = dependent && likertTotal(dependent.dis);
+          console.log(lTotal, idealHighTotal);
+          if (!lTotal || !dependent.varNum || lTotal.highTotal < idealHighTotal)
+            return false;
+        }
+        for (let label in independents) {
+          const independent = independents[label];
+          const idealHighTotal = highCount * independent.varNum;
+
+          const lTotal = independent && likertTotal(independent.dis);
+          console.log(lTotal, idealHighTotal);
+          if (
+            !lTotal ||
+            !independent.varNum ||
+            lTotal.highTotal < idealHighTotal
+          )
+            return false;
+        }
+        return true;
+      }
+      function generate(data) {
+        const highPercentage = Math.random() * 20 + 40;
+        const highCount = Math.floor((highPercentage / 100) * data.rec);
+      }
+      function exec() {
+        alert(isValidInput(getInput()));
+      }
+      /*
+            
+        */
+    </script>
+  </body>
+</html>
