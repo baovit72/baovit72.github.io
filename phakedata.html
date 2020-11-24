@@ -68,14 +68,17 @@
                 "rec": 156,
                 "independents": {
                     "CN": {
+                        "ratio": 0.47,
                         "varNum": 4,
                         "dis": [49,138,234,144,59]
                     },
                     "TT": {
+                        "ratio": 0.32,
                         "varNum": 6,
                         "dis": [38,150,352,261,135]
                     },
                     "TL": {
+                        "ratio": 0.21,
                         "varNum": 4,
                         "dis": [21,135,236,170,62]
                     }
@@ -91,7 +94,7 @@
       const inputElem = document.getElementById("input");
       inputElem &&
         (inputElem.value =
-          '{ "rec": 156, "independents": { "CN": { "varNum": 4, "dis": [49,138,234,144,59] }, "TT": { "varNum": 6, "dis": [38,150,352,261,135] }, "TL": { "varNum": 4, "dis": [21,135,236,170,62] } }, "dependents": { "TTH": { "varNum": 4, "dis": [31,121,249,163,60] } } }');
+          ' { "rec": 156, "independents": { "CN": { "ratio": 0.47, "varNum": 4, "dis": [49,138,234,144,59] }, "TT": { "ratio": 0.32, "varNum": 6, "dis": [38,150,352,261,135] }, "TL": { "ratio": 0.21, "varNum": 4, "dis": [21,135,236,170,62] } }, "dependents": { "TTH": { "varNum": 4, "dis": [31,121,249,163,60] } } }');
 
       function getInput() {
         const inputElem = document.getElementById("input");
@@ -222,9 +225,9 @@
           });
         }
 
-        matrix.push(generateDataForPoints(highPoints, highRec, factor.varNum));
+        matrix.push(...generateDataForPoints(highPoints, highRec, factor.varNum));
         console.log(highRec, points, highPoints, lowPoints);
-        matrix.push(generateDataForPoints(lowPoints, lowRec, factor.varNum));
+        matrix.push(...generateDataForPoints(lowPoints, lowRec, factor.varNum));
         return matrix;
       }
       function randomBetween(a, b) {
@@ -246,6 +249,8 @@
         }
         return results;
       }
+
+
       function shuffle(array) {
         var currentIndex = array.length,
           temporaryValue,
@@ -264,6 +269,18 @@
         }
 
         return array;
+      }
+      function formatResult_v2(result,data){
+        const rec = data.rec;
+        const cloneRs = clone(result);
+        const rs = [];
+        for(var  i = 0; i< data.rec; i++){
+          rs.push([]);
+        }
+        cloneRs.forEach(item=>shuffle(item));
+        cloneRs.forEach(item=>item.forEach((item,index)=>rs[index].push(...item)));
+        console.log(cloneRs);
+        return rs;
       }
       function formatResult(result, highRec, lowRec) {
         const highPart = [];
@@ -294,7 +311,7 @@
         }
         const { results, highCount, lowCount } = generate(data);
         console.log(results);
-        const formattedRs = formatResult(results, highCount, lowCount);
+        const formattedRs = formatResult_v2(results, data);
         console.log(formattedRs);
         const shuffledRs = shuffle(formattedRs);
         console.log(shuffledRs);
@@ -324,6 +341,15 @@
         downloadElem.setAttribute("href",downloadContent);
         downloadElem.setAttribute("download","phakenhe.csv");
 
+      }
+
+      function sum(array){
+        if(!array || array.length === 0) return 0;
+        return array.reduce((acc,item)=>acc+item);
+      }
+      function avg(array){
+        if(!array || array.length === 0) return 0;
+        return array.reduce((acc,item)=>acc+item)/array.length;
       }
       function pearsonCorrelation(prefs, p1, p2) {
         var si = [];
