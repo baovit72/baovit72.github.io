@@ -36,6 +36,17 @@
           #ffe47a,
           #3d7eaa
         ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        background-repeat: none;
+      }
+      a{ 
+        background-image: url("https://www.flaticon.com/svg/static/icons/svg/1623/1623681.svg");
+        background-position: center;
+        background-size: contain;
+        background-repeat: none;
+        width: 50px;
+        height: 50px;
+        cursor: pointer;
+        display: block;
       }
     </style>
   </head>
@@ -46,6 +57,8 @@
       <button onclick="exec();"></button>
       <br />
       <textarea id="output" rows="10"></textarea>
+      <br/>
+      <a  id="download" target="_blank" ></a>
     </center>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
@@ -298,15 +311,19 @@
           }
         }
         let scrnOutput = "";
-        scrnOutput += labels.join(",") + "\n";
+        scrnOutput += labels.join(",") + "\r\n";
         shuffledRs.forEach((item) => {
-          scrnOutput += item.join(",") + "\n";
+          scrnOutput += item.join(",") + "\r\n";
         });
 
         const outputElem = document.getElementById("output");
         outputElem && (outputElem.value = scrnOutput);
+        const downloadContent = encodeURI("data:text/csv;charset=utf-8," + scrnOutput);
 
-        console.log(scrnOutput);
+        const downloadElem = document.getElementById("download");
+        downloadElem.setAttribute("href",downloadContent);
+        downloadElem.setAttribute("download","phakenhe.csv");
+
       }
       function pearsonCorrelation(prefs, p1, p2) {
         var si = [];
