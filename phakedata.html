@@ -24,6 +24,8 @@
       <br />
       <textarea id="output" rows="10"></textarea>
     </center>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
     <script>
       /*
           {
@@ -88,11 +90,9 @@
         return true;
       }
       function likertTotal(dis) {
-        console.log(dis);
         let lowTotal = 0;
         let highTotal = 0;
         if (!dis || !dis.length || dis.length < 2) return null;
-        console.log("do count");
         const indexHolder = Math.floor(dis.length / 2);
         dis.forEach((item, index) => {
           if (index <= indexHolder) lowTotal += item;
@@ -113,7 +113,6 @@
           const dependent = dependents[label];
           const idealHighTotal = highCount * dependent.varNum;
           const lTotal = dependent && likertTotal(dependent.dis);
-          console.log(lTotal, idealHighTotal);
           if (!lTotal || !dependent.varNum || lTotal.highTotal < idealHighTotal)
             return false;
         }
@@ -122,7 +121,6 @@
           const idealHighTotal = highCount * independent.varNum;
 
           const lTotal = independent && likertTotal(independent.dis);
-          console.log(lTotal, idealHighTotal);
           if (
             !lTotal ||
             !independent.varNum ||
@@ -132,12 +130,202 @@
         }
         return true;
       }
+      var myrng = new Math.seedrandom(Date.now());
       function generate(data) {
-        const highPercentage = Math.random() * 20 + 40;
+        const results = [];
+        myrng = new Math.seedrandom(Date.now());
+        const highPercentage = randomBetween(40, 60);
         const highCount = Math.floor((highPercentage / 100) * data.rec);
+        const lowCount = data.rec - highCount;
+        if (!isDataGoodPortion(data, highCount))
+          return { err: 1, msg: "Data can't be generated, check your dis" };
+
+        for (let label in data.independents) {
+          const matrix = randomlyGenerateDataForFactor(
+            clone(data.independents[label]),
+            lowCount,
+            highCount
+          );
+          results.push(matrix);
+        }
+        for (let label in data.dependents) {
+          const matrix = randomlyGenerateDataForFactor(
+            clone(data.dependents[label]),
+            lowCount,
+            highCount
+          );
+          results.push(matrix);
+        }
+        return { results, highCount, lowCount };
+      }
+      function clone(obj) {
+        return JSON.parse(JSON.stringify(obj));
+      }
+      function randomlyGenerateDataForFactor(factor, lowRec, highRec) {
+        const matrix = [];
+        const dis = factor.dis;
+        const indexHolder = Math.floor(dis.length / 2);
+        const points = dis.map((d, index) => {
+          return { value: index + 1, remain: d };
+        });
+        const highPoints =
+          points && points.filter((d, index) => index > indexHolder);
+        const lowPoints =
+          points && points.filter((d, index) => index < indexHolder);
+        if (dis.length % 2 !== 0) {
+          const highTotal = highRec * factor.varNum;
+          const remainTotal =
+            highTotal - highPoints.reduce((acc, item) => acc + item.remain, 0);
+          highPoints.push({
+            value: points[Math.floor(dis.length / 2)].value,
+            remain: remainTotal,
+          });
+          lowPoints.push({
+            value: points[Math.floor(dis.length / 2)].value,
+            remain: points[Math.floor(dis.length / 2)].remain - remainTotal,
+          });
+        }
+
+        matrix.push(generateDataForPoints(highPoints, highRec, factor.varNum));
+        console.log(highRec, points, highPoints, lowPoints);
+        matrix.push(generateDataForPoints(lowPoints, lowRec, factor.varNum));
+        return matrix;
+      }
+      function randomBetween(a, b) {
+        return (Math.abs(myrng.int32()) % (b - a)) + a;
+      }
+      function generateDataForPoints(points, rec, varNum) {
+        const results = [];
+        for (let i = 0; i < rec; i++) {
+          const row = [];
+
+          for (let j = 0; j < varNum; j++) {
+            const availablePoints = points.filter((p) => p.remain > 0);
+            const index = randomBetween(0, availablePoints.length);
+            row.push(availablePoints[index].value);
+            availablePoints[index].remain--;
+          }
+
+          results.push(row);
+        }
+        return results;
+      }
+      function shuffle(array) {
+        var currentIndex = array.length,
+          temporaryValue,
+          randomIndex;
+
+        // While there remain elements to shuffle...
+        while (0 !== currentIndex) {
+          // Pick a remaining element...
+          randomIndex = Math.floor(myrng.double() * currentIndex);
+          currentIndex -= 1;
+
+          // And swap it with the current element.
+          temporaryValue = array[currentIndex];
+          array[currentIndex] = array[randomIndex];
+          array[randomIndex] = temporaryValue;
+        }
+
+        return array;
+      }
+      function formatResult(result, highRec, lowRec) {
+        const highPart = [];
+        for (let i = 0; i < highRec; i++) {
+          highPart.push([]);
+        }
+
+        const lowPart = [];
+        for (let i = 0; i < lowRec; i++) {
+          lowPart.push([]);
+        }
+        result.forEach((item) => {
+          let stats = item[0];
+          stats.forEach((item, index) => {
+            highPart[index].push(item);
+          });
+          stats = item[1];
+          stats.forEach((item, index) => {
+            lowPart[index].push(item);
+          });
+        });
+        return [...highPart, ...lowPart];
       }
       function exec() {
-        alert(isValidInput(getInput()));
+        const data = getInput();
+        if (!isValidInput(data)) {
+          return false;
+        }
+        const { results, highCount, lowCount } = generate(data);
+        console.log(results);
+        const formattedRs = formatResult(results, highCount, lowCount);
+        console.log(formattedRs);
+        const shuffledRs = shuffle(formattedRs);
+        console.log(shuffledRs);
+        const labels = [];
+        for (let label in data.independents) {
+          for(let i = 1; i<= data.independents[label].varNum; i++){
+            console.log(i);
+            labels.push(label + i);
+          }
+        }
+        for (let label in data.dependents) {
+          for(let i = 1; i<= data.dependents[label].varNum; i++){
+            labels.push(label + i);
+          }
+        }
+        let scrnOutput = "";
+        scrnOutput += labels.join(",") + "\n";
+        shuffledRs.forEach((item) => {
+          scrnOutput += item.join(",") + "\n";
+        });
+        
+        
+        const outputElem = document.getElementById("output");
+        outputElem && (outputElem.value = scrnOutput);
+
+        console.log(scrnOutput);
+      }
+      function pearsonCorrelation(prefs, p1, p2) {
+        var si = [];
+
+        for (var key in prefs[p1]) {
+          if (prefs[p2][key]) si.push(key);
+        }
+
+        var n = si.length;
+
+        if (n == 0) return 0;
+
+        var sum1 = 0;
+        for (var i = 0; i < si.length; i++) sum1 += prefs[p1][si[i]];
+
+        var sum2 = 0;
+        for (var i = 0; i < si.length; i++) sum2 += prefs[p2][si[i]];
+
+        var sum1Sq = 0;
+        for (var i = 0; i < si.length; i++) {
+          sum1Sq += Math.pow(prefs[p1][si[i]], 2);
+        }
+
+        var sum2Sq = 0;
+        for (var i = 0; i < si.length; i++) {
+          sum2Sq += Math.pow(prefs[p2][si[i]], 2);
+        }
+
+        var pSum = 0;
+        for (var i = 0; i < si.length; i++) {
+          pSum += prefs[p1][si[i]] * prefs[p2][si[i]];
+        }
+
+        var num = pSum - (sum1 * sum2) / n;
+        var den = Math.sqrt(
+          (sum1Sq - Math.pow(sum1, 2) / n) * (sum2Sq - Math.pow(sum2, 2) / n)
+        );
+
+        if (den == 0) return 0;
+
+        return num / den;
       }
       /*
             
