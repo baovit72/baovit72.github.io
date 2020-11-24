@@ -7,12 +7,35 @@
     <style>
       textarea {
         width: 80vw;
+        min-height: 300px;
       }
       * {
         margin: 10px 10px;
       }
       button {
         padding: 5px 20px;
+        background-image: url("https://www.flaticon.com/svg/static/icons/svg/2372/2372953.svg");
+        background-position: center;
+        background-size: contain;
+        width: 50px;
+        height: 50px;
+        outline: none;
+        border: none;
+        cursor: pointer;
+        border-radius: 10px;
+      }
+      body {
+        background: #3d7eaa; /* fallback for old browsers */
+        background: -webkit-linear-gradient(
+          to right,
+          #ffe47a,
+          #3d7eaa
+        ); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(
+          to right,
+          #ffe47a,
+          #3d7eaa
+        ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
       }
     </style>
   </head>
@@ -20,7 +43,7 @@
     <center>
       <textarea id="input" rows="10"></textarea>
       <br />
-      <button onclick="exec();">button</button>
+      <button onclick="exec();"></button>
       <br />
       <textarea id="output" rows="10"></textarea>
     </center>
@@ -264,13 +287,13 @@
         console.log(shuffledRs);
         const labels = [];
         for (let label in data.independents) {
-          for(let i = 1; i<= data.independents[label].varNum; i++){
+          for (let i = 1; i <= data.independents[label].varNum; i++) {
             console.log(i);
             labels.push(label + i);
           }
         }
         for (let label in data.dependents) {
-          for(let i = 1; i<= data.dependents[label].varNum; i++){
+          for (let i = 1; i <= data.dependents[label].varNum; i++) {
             labels.push(label + i);
           }
         }
@@ -279,8 +302,7 @@
         shuffledRs.forEach((item) => {
           scrnOutput += item.join(",") + "\n";
         });
-        
-        
+
         const outputElem = document.getElementById("output");
         outputElem && (outputElem.value = scrnOutput);
 
