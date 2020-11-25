@@ -38,7 +38,7 @@
         ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
         background-repeat: none;
       }
-      a{ 
+      a {
         background-image: url("https://www.flaticon.com/svg/static/icons/svg/1623/1623681.svg");
         background-position: center;
         background-size: contain;
@@ -57,8 +57,8 @@
       <button onclick="exec();"></button>
       <br />
       <textarea id="output" rows="10"></textarea>
-      <br/>
-      <a  id="download" target="_blank" ></a>
+      <br />
+      <a id="download" target="_blank"></a>
     </center>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
@@ -225,7 +225,9 @@
           });
         }
 
-        matrix.push(...generateDataForPoints(highPoints, highRec, factor.varNum));
+        matrix.push(
+          ...generateDataForPoints(highPoints, highRec, factor.varNum)
+        );
         console.log(highRec, points, highPoints, lowPoints);
         matrix.push(...generateDataForPoints(lowPoints, lowRec, factor.varNum));
         return matrix;
@@ -250,7 +252,6 @@
         return results;
       }
 
-
       function shuffle(array) {
         var currentIndex = array.length,
           temporaryValue,
@@ -270,43 +271,65 @@
 
         return array;
       }
-      function getCorrespondingRow(rows,weight, usedIndexes) {
-            let minRow = {value:null,diff: 10000};
-            rows.forEach((row,index)=>{
-              const diff = Math.abs(avg(row)-weight);
-              if(diff < minRow.diff && !usedIndexes.includes(index)){
-                  minRow.diff = diff;
-                  minRow.value = row;
-              }
-            })
-            return minRow.value;
+      function getCorrespondingRow(rows, weight, usedIndexes) {
+        let minRow = { value: null, diff: 10000, index: -1 };
+        rows.forEach((row, index) => {
+          const diff = Math.abs(avg(row) - weight);
+          if (diff < minRow.diff && !usedIndexes.includes(index)) {
+            minRow.diff = diff;
+            minRow.value = row;
+            minRow.index = index;
+          }
+        });
+
+        usedIndexes.push(minRow.index);
+        console.log("correspondingRows",minRow);
+        return minRow.value;
       }
-      function formatResult_v2(result,data){
+      function formatResult_v2(result, data) {
         const rec = data.rec;
         const cloneRs = clone(result);
         const weights = [];
         const ratios = [];
         let independentsCount = 0;
-        for(let label in data.independents){
+        for (let label in data.independents) {
           independentsCount++;
           ratios.push(data.independents[label].ratio);
         }
         const rs = [];
 
-        for(var  i = 0; i< data.rec; i++){
+        for (var i = 0; i < data.rec; i++) {
           rs.push([]);
           weights.push(0);
         }
-        cloneRs.forEach(item=>shuffle(item));
-        cloneRs.forEach((item,rsIndex)=>rsIndex < independentsCount && item.forEach((item,index)=>{
-          rs[index].push(...item);
-          weights[index] += ratios[rsIndex] * avg(item);
-        }));
-        console.log(weights)
-        cloneRs.forEach((item)=>item.forEach((item,index)=>{
-          
-        }));
-        console.log(cloneRs);
+        cloneRs.forEach((item) => shuffle(item));
+
+        const dependentRows = [];
+
+        cloneRs.forEach(
+          (item, rsIndex) =>
+            (rsIndex < independentsCount &&
+              item.forEach((item, index) => {
+                rs[index].push(...item);
+                weights[index] += ratios[rsIndex] * avg(item);
+              })) ||
+            (rsIndex >= independentsCount && dependentRows.push(item))
+        );
+        
+        console.log("cloneRs",cloneRs);
+        console.log("dependentsRows",dependentRows)
+
+        const usedIndexesArray = [];
+        for (let i = 0; i < dependentRows.length; i++) {
+          usedIndexesArray.push([]);
+        }
+
+        rs.forEach((item, index) => {
+          dependentRows.forEach((item,dIndex) => {
+            rs[index].push(...getCorrespondingRow(item,weights[index],usedIndexesArray[dIndex]));
+          });
+        });
+        console.log("rs after added",rs);
         return rs;
       }
       function formatResult(result, highRec, lowRec) {
@@ -345,7 +368,6 @@
         const labels = [];
         for (let label in data.independents) {
           for (let i = 1; i <= data.independents[label].varNum; i++) {
-            console.log(i);
             labels.push(label + i);
           }
         }
@@ -362,21 +384,22 @@
 
         const outputElem = document.getElementById("output");
         outputElem && (outputElem.value = scrnOutput);
-        const downloadContent = encodeURI("data:text/csv;charset=utf-8," + scrnOutput);
+        const downloadContent = encodeURI(
+          "data:text/csv;charset=utf-8," + scrnOutput
+        );
 
         const downloadElem = document.getElementById("download");
-        downloadElem.setAttribute("href",downloadContent);
-        downloadElem.setAttribute("download","phakenhe.csv");
-
+        downloadElem.setAttribute("href", downloadContent);
+        downloadElem.setAttribute("download", "phakenhe.csv");
       }
 
-      function sum(array){
-        if(!array || array.length === 0) return 0;
-        return array.reduce((acc,item)=>acc+item);
+      function sum(array) {
+        if (!array || array.length === 0) return 0;
+        return array.reduce((acc, item) => acc + item);
       }
-      function avg(array){
-        if(!array || array.length === 0) return 0;
-        return array.reduce((acc,item)=>acc+item)/array.length;
+      function avg(array) {
+        if (!array || !(array.length >= 0)) return 0;
+        return array.reduce((acc, item) => acc + item) / array.length;
       }
       function pearsonCorrelation(prefs, p1, p2) {
         var si = [];
