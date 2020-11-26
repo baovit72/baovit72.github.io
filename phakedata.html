@@ -347,10 +347,10 @@
 
         //Calculate weight with moderator
 
-         if(moderatorIndex >= 0 && moderatedIndexes.length > 0){
+          
            rawWeightData.forEach((data,dIndex)=>{
               data.forEach((item,iIndex)=>{
-                if(moderatedIndexes.includes(iIndex)){
+                if(moderatorIndex >= 0 && moderatedIndexes.includes(iIndex)){
                   weights[dIndex] += ratios[iIndex] * avg([item,data[moderatorIndex]]);
                 } 
                 else
@@ -359,7 +359,7 @@
                 }
               })
            });
-         } 
+           
          console.log("weights",weights)
         console.log("cloneRs",cloneRs);
         console.log("dependentsRows",dependentRows)
