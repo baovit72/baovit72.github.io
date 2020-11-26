@@ -282,6 +282,9 @@
             return minRow.value;
       }
       function formatResult_v2(result,data){
+
+       
+
         const rec = data.rec;
         const cloneRs = clone(result);
         const weights = [];
@@ -291,15 +294,19 @@
           independentsCount++;
           ratios.push(data.independents[label].ratio);
         }
+
         const rs = [];
+        const avgValues = [];
 
         for(var  i = 0; i< data.rec; i++){
           rs.push([]);
+          avgValues.push([]);
           weights.push(0);
         }
         cloneRs.forEach(item=>shuffle(item));
         cloneRs.forEach((item,rsIndex)=>rsIndex < independentsCount && item.forEach((item,index)=>{
           rs[index].push(...item);
+          avgValues[index].push(avg(item));
           weights[index] += ratios[rsIndex] * avg(item);
         }));
         console.log(weights)
