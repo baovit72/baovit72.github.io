@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="preload" href="./style.css" as="style" />
+    <link rel="preload" href="./bundle.js" as="script" />
+    <meta charset="utf-8" />
+    <title>Tôi cần giúp đỡ</title>
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,minimal-ui"
+    />
+    <meta name="description" content="preact-boilerplate" />
+    <meta name="msapplication-TileColor" content="#673ab8" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <title>Zalo Game Social Page</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://templates-ecard.zadn.vn/zgameh5/socialpage/css/style.css"
+    />
+    <style>
+      .loading-page {
+        text-align: center;
+        padding-top: 40vh;
+      }
+      @font-face {
+        font-family: "ArimaMadurai-Bold";
+        src: url("https://templates-ecard.zdn.vn/fonts/ArimaMadurai-Bold.ttf");
+      }
+      @font-face {
+        font-family: "Arima-Madurai";
+        src: url("https://templates-ecard.zdn.vn/fonts/Arima-Madurai.woff");
+      }
+      @font-face {
+        font-family: "Kodchasan-Italic";
+        src: url("https://templates-ecard.zdn.vn/fonts/Kodchasan-Italic.ttf");
+      }
+      @font-face {
+        font-family: "Mali-BoldItalic";
+        src: url("https://templates-ecard.zdn.vn/fonts/Mali-BoldItalic.ttf");
+      }
+      @font-face {
+        font-family: "Montserrat-Regular";
+        src: url("https://templates-ecard.zdn.vn/fonts/Montserrat-Regular.ttf");
+      }
+      @font-face {
+        font-family: "UTM ThuPhap Thien An";
+        src: url("https://templates-ecard.zdn.vn/fonts/UTM ThuPhap Thien An.ttf");
+      }
+      @font-face {
+        font-family: "JosefinSans-SemiBold";
+        src: url("https://templates-ecard.zdn.vn/fonts/JosefinSans-SemiBold.ttf");
+      }
+      @font-face {
+        font-family: "CrimsonPro-ExtraLight";
+        src: url("https://templates-ecard.zdn.vn/fonts/CrimsonPro-ExtraLight.ttf");
+      }
+      @font-face {
+        font-family: "Barlow-Medium";
+        src: url("https://templates-ecard.zdn.vn/fonts/Barlow-Medium.ttf");
+      }
+      @font-face {
+        font-family: "CrimsonPro-ExtraLightItalic";
+        src: url("https://templates-ecard.zdn.vn/fonts/CrimsonPro-ExtraLightItalic.ttf");
+      }
+      @font-face {
+        font-family: "UTM Androgyne";
+        src: url("https://templates-ecard.zdn.vn/fonts/UTM Androgyne.ttf");
+      }
+      @font-face {
+        font-family: "Lora-BoldItalic";
+        src: url("https://templates-ecard.zdn.vn/fonts/Lora-BoldItalic.ttf");
+      }
+      @font-face {
+        font-family: "Kodchasan-MediumItalic";
+        src: url("https://templates-ecard.zdn.vn/fonts/Kodchasan-MediumItalic.ttf");
+      }
+      @font-face {
+        font-family: "Inter-BoldItalic";
+        src: url("https://templates-ecard.zdn.vn/fonts/Inter-BoldItalic.ttf");
+      }
+      @font-face {
+        font-family: "BarlowSemiCondensed-Regular";
+        src: url("https://templates-ecard.zdn.vn/fonts/BarlowSemiCondensed-Regular.ttf");
+      }
+      @font-face {
+        font-family: "Barlow-SemiBoldItalic";
+        src: url("https://templates-ecard.zdn.vn/fonts/Barlow-SemiBoldItalic.ttf");
+      }
+      @font-face {
+        font-family: "Traveling-Typewriter";
+        src: url("https://templates-ecard.zdn.vn/fonts/Traveling-Typewriter.ttf");
+      }
+      @font-face {
+        font-family: "Pangolin-Regular";
+        src: url("https://templates-ecard.zdn.vn/fonts/Pangolin-Regular.ttf");
+      }
+      @font-face {
+        font-family: "DancingScript-Regular";
+        src: url("https://templates-ecard.zdn.vn/fonts/DancingScript-Regular.ttf");
+      }
+      @font-face {
+        font-family: "DancingScript-Bold";
+        src: url("https://templates-ecard.zdn.vn/fonts/DancingScript-Bold.ttf");
+      }
+      @font-face {
+        font-family: "Prata-Regular";
+        src: url("https://templates-ecard.zdn.vn/fonts/Prata-Regular.ttf");
+      }
+      @font-face {
+        font-family: "CrimsonPro-VariableFont_wght";
+        src: url("https://templates-ecard.zdn.vn/fonts/CrimsonPro-VariableFont_wght.ttf");
+      }
+      @font-face {
+        font-family: "CrimsonPro-Italic-VariableFont_wght";
+        src: url("https://templates-ecard.zdn.vn/fonts/CrimsonPro-Italic-VariableFont_wght.ttf");
+      }
+      @font-face {
+        font-family: "Rokkitt-Medium";
+        src: url("https://templates-ecard.zdn.vn/fonts/Rokkitt-Medium.ttf");
+      }
+      @font-face {
+        font-family: "Farsan-Regular";
+        src: url("https://templates-ecard.zdn.vn/fonts/Farsan-Regular.ttf");
+      }
+      @font-face {
+        font-family: "Barlow-Bold";
+        src: url("https://templates-ecard.zdn.vn/fonts/Barlow-Bold.ttf");
+      }
+      @font-face {
+        font-family: "JosefinSans-SemiBold";
+        src: url("https://templates-ecard.zdn.vn/fonts/JosefinSans-SemiBold.ttf");
+      }
+      @font-face {
+        font-family: "Barlow-LightItalic";
+        src: url("https://templates-ecard.zdn.vn/fonts/Barlow-LightItalic.ttf");
+      }
+      @font-face {
+        font-family: "Lora-Italic";
+        src: url("https://templates-ecard.zdn.vn/fonts/Lora-Italic.ttf");
+      }
+      @font-face {
+        font-family: "ArimaMadurai-Regular";
+        src: url("https://templates-ecard.zdn.vn/fonts/ArimaMadurai-Regular.ttf");
+      }
+      @font-face {
+        font-family: "Cormorant-Medium";
+        src: url("https://templates-ecard.zdn.vn/fonts/Cormorant-Medium.ttf");
+      }
+      @font-face {
+        font-family: "Courier";
+        src: url("https://templates-ecard.zdn.vn/fonts/Courier.ttf");
+      }
+      @font-face {
+        font-family: "IBMPlexSans-Italic";
+        src: url("https://templates-ecard.zdn.vn/fonts/IBMPlexSans-Italic.ttf");
+      }
+      @font-face {
+        font-family: "JosefinSans-Regular";
+        src: url("https://templates-ecard.zdn.vn/fonts/JosefinSans-Regular.ttf");
+      }
+      @font-face {
+        font-family: "Farsan-Regular";
+        src: url("https://templates-ecard.zdn.vn/fonts/Farsan-Regular.ttf");
+      }
+      @font-face {
+        font-family: "Barlow-Italic";
+        src: url("https://templates-ecard.zdn.vn/fonts/Barlow-Italic.ttf");
+      }
+      @font-face {
+        font-family: "Comfortaa-Bold";
+        src: url("https://templates-ecard.zdn.vn/fonts/Comfortaa-Bold.ttf");
+      }
+      @font-face {
+        font-family: "Muli-ExtraBold";
+        src: url("https://templates-ecard.zdn.vn/fonts/Muli-ExtraBold.ttf");
+      }
+      @font-face {
+        font-family: "PaytoneOne-Regular";
+        src: url("https://templates-ecard.zdn.vn/fonts/PaytoneOne-Regular.ttf");
+      }
+      @font-face {
+        font-family: "Mali-Italic";
+        src: url("https://templates-ecard.zdn.vn/fonts/Mali-Italic.ttf");
+      }
+      @font-face {
+        font-family: "Mali-SemiBoldItalic";
+        src: url("https://templates-ecard.zdn.vn/fonts/Mali-SemiBoldItalic.ttf");
+      }
+      @font-face {
+        font-family: "Nunito-SemiBold";
+        src: url("https://templates-ecard.zdn.vn/fonts/Nunito-SemiBold.ttf");
+      }
+      @font-face {
+        font-family: "Cochin-BoldItalic";
+        src: url("https://templates-ecard.zdn.vn/fonts/Cochin-BoldItalic.ttf");
+      }
+      @font-face {
+        font-family: "Cochin-Italic";
+        src: url("https://templates-ecard.zdn.vn/fonts/Cochin-Italic.ttf");
+      }
+      @font-face {
+        font-family: "Cabin-Italic";
+        src: url("https://templates-ecard.zdn.vn/fonts/Cabin-Italic.ttf");
+      }
+      @font-face {
+        font-family: "Baloo-Regular";
+        src: url("https://templates-ecard.zdn.vn/fonts/Baloo-Regular.ttf");
+      }
+      @font-face {
+        font-family: "Roboto-Regular";
+        src: url("https://templates-ecard.zdn.vn/fonts/Roboto-Regular.ttf");
+      }
+      @font-face {
+        font-family: "Muli-SemiBold";
+        src: url("https://templates-ecard.zdn.vn/fonts/Muli-SemiBold.ttf");
+      }
+      @font-face {
+        font-family: "Comfortaa-Regular";
+        src: url("https://templates-ecard.zdn.vn/fonts/Comfortaa-Regular.ttf");
+      }
+      @font-face {
+        font-family: "MontserratAlternates-BoldItalic";
+        src: url("https://templates-ecard.zdn.vn/fonts/MontserratAlternates-BoldItalic.ttf");
+      }
+      @font-face {
+        font-family: "MontserratAlternates-Regular";
+        src: url("https://templates-ecard.zdn.vn/fonts/MontserratAlternates-Regular.ttf");
+      }
+      @font-face {
+        font-family: "Mali-Regular";
+        src: url("https://templates-ecard.zdn.vn/fonts/Mali-Regular.ttf");
+      }
+      @font-face {
+        font-family: "Mali-SemiBold";
+        src: url("https://templates-ecard.zdn.vn/fonts/Mali-SemiBold.ttf");
+      }
+      @font-face {
+        font-family: "Lobster-Regular";
+        src: url("https://templates-ecard.zdn.vn/fonts/Lobster-Regular.ttf");
+      }
+      @font-face {
+        font-family: "Lobster-Regular";
+        src: url("https://templates-ecard.zdn.vn/fonts/Lobster-Regular.ttf");
+      }
+      @font-face {
+        font-family: "Krub-BoldItalic";
+        src: url("https://templates-ecard.zdn.vn/fonts/Krub-BoldItalic.ttf");
+      }
+      @font-face {
+        font-family: "Krub-Medium";
+        src: url("https://templates-ecard.zdn.vn/fonts/Krub-Medium.ttf");
+      }
+      @font-face {
+        font-family: "Barlow-MediumItalic";
+        src: url("https://templates-ecard.zdn.vn/fonts/Barlow-MediumItalic.ttf");
+      }
+      @font-face {
+        font-family: "Barlow-Light";
+        src: url("https://templates-ecard.zdn.vn/fonts/Barlow-Light.ttf");
+      }
+      @font-face {
+        font-family: "Kodchasan-LightItalic";
+        src: url("https://templates-ecard.zdn.vn/fonts/Kodchasan-LightItalic.ttf");
+      }
+      @font-face {
+        font-family: "Kodchasan-Medium";
+        src: url("https://templates-ecard.zdn.vn/fonts/Kodchasan-Medium.ttf");
+      }
+      @font-face {
+        font-family: "SpaceMono-Bold";
+        src: url("https://templates-ecard.zdn.vn/fonts/SpaceMono-Bold.ttf");
+      }
+      @font-face {
+        font-family: "SpaceMono-Regular";
+        src: url("https://templates-ecard.zdn.vn/fonts/SpaceMono-Regular.ttf");
+      }
+      @font-face {
+        font-family: "Quicksand-Medium";
+        src: url("https://templates-ecard.zdn.vn/fonts/Quicksand-Medium.ttf");
+      }
+      @font-face {
+        font-family: "Courier New";
+        src: url("https://templates-ecard.zdn.vn/fonts/Courier New.ttf");
+      }
+      @font-face {
+        font-family: "Courier New Bold";
+        src: url("https://templates-ecard.zdn.vn/fonts/Courier New Bold.ttf");
+      }
+      @font-face {
+        font-family: "Itim-Regular";
+        src: url("https://templates-ecard.zdn.vn/fonts/Itim-Regular.ttf");
+      }
+      @font-face {
+        font-family: "Rokkitt-Light";
+        src: url("https://templates-ecard.zdn.vn/fonts/Rokkitt-Light.ttf");
+      }
+      @font-face {
+        font-family: "RobotoSlab-Light";
+        src: url("https://templates-ecard.zdn.vn/fonts/RobotoSlab-Light.ttf");
+      }
+      @font-face {
+        font-family: "HumbleHearts";
+        src: url("https://templates-ecard.zdn.vn/fonts/HumbleHearts.ttf");
+      }
+      @font-face {
+        font-family: "Stabile-Regular";
+        src: url("https://templates-ecard.zdn.vn/fonts/Stabile-Regular.ttf");
+      }
+      @font-face {
+        font-family: "Inconsolata-Bold";
+        src: url("https://templates-ecard.zdn.vn/fonts/Inconsolata-Bold.ttf");
+      }
+
+      @font-face {
+        font-family: "Rokkitt-Regular";
+        src: url("https://templates-ecard.zdn.vn/fonts/Rokkitt-Regular.ttf");
+      }
+      @font-face {
+        font-family: "Yummo-Bold";
+        src: url("https://templates-ecard.zdn.vn/fonts/Yummo-Bold.ttf");
+      }
+      @font-face {
+        font-family: "Lora-Regular";
+        src: url("https://templates-ecard.zdn.vn/fonts/Lora-Regular.ttf");
+      }
+      @font-face {
+        font-family: "Lora-Italic";
+        src: url("https://templates-ecard.zdn.vn/fonts/Lora-Italic.ttf");
+      }
+      @font-face {
+        font-family: "iCiel-Simplifica";
+        src: url("https://templates-ecard.zdn.vn/fonts/iCiel-Simplifica.ttf");
+      }
+      @font-face {
+        font-family: "Inconsolata-Regular";
+        src: url("https://templates-ecard.zdn.vn/fonts/Inconsolata-Regular.ttf");
+      }
+      @font-face {
+        font-family: "FiraSansExtraCondensed-Regular";
+        src: url("https://templates-ecard.zdn.vn/fonts/FiraSansExtraCondensed-Regular.ttf");
+      }
+      @font-face {
+        font-family: "Lato-Regular_0";
+        src: url("https://templates-ecard.zdn.vn/fonts/Lato-Regular_0.ttf");
+      }
+      @font-face {
+        font-family: "geoslabl";
+        src: url("https://templates-ecard.zdn.vn/fonts/geoslabl.ttf");
+      }
+      @font-face {
+        font-family: "lmmonocaps10-regular";
+        src: url("https://templates-ecard.zdn.vn/fonts/lmmonocaps10-regular.ttf");
+      }
+      @font-face {
+        font-family: "Jura-Medium";
+        src: url("https://templates-ecard.zdn.vn/fonts/Jura-Medium.ttf");
+      }
+      @font-face {
+        font-family: "RobotoCondensed-Regular";
+        src: url("https://templates-ecard.zdn.vn/fonts/RobotoCondensed-Regular.ttf");
+      }
+      /* .Modal-modal-0-1-3 {
+			border-radius: 5px;
+		}
+		.Modal-closeIcon-0-1-4 {
+			display: none;
+		} */
+    </style>
+    <link href="./style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <script
+      async="async"
+      src="https://www.googletagservices.com/tag/js/gpt.js"
+    ></script>
+    <script src="https://sp.zalo.me/plugins/sdk.js?v=6.0.3"></script>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-108352130-28"
+    ></script>
+    <script>
+      let appId = 0;
+      let pathname = window.location.pathname;
+      let sp = pathname.split("/");
+      if (sp) {
+        appId = sp[sp.length - 1];
+      }
+      appId = "429258514953515822";
+      window.ZGH5_CONFIG = {
+        OS: "PC",
+        ZALO_VERSION: -1,
+        APP_ID: appId,
+        VERSION: "6.0.3",
+      };
+      var googletag = googletag || {};
+      googletag.cmd = googletag.cmd || [];
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "UA-108352130-28");
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/eruda/2.4.1/eruda.min.js" integrity="sha512-RrQDQUon0OiQVjKQYkMuhtLgx8R/4niagIVdHltxcAJa1+cc8FJFFOhtLuK3YJAoo5mdfAFh98ZQwbDKJgFIpg==" crossorigin="anonymous"></script>
+    <script>
+      eruda.init();
+    </script>
+    <script src="https://zingplay.me/game-adtima-sdk-v2.js"></script>
+    <script>
+	  GameH5Adtima.init();
+	  GameH5Adtima.showRewardVideo(e=>console.log(e));
+    </script>
+    <script type="text/javascript" src="./bundle.js"></script>
+  </body>
+</html>
