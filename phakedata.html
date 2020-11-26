@@ -70,6 +70,7 @@
                     "CN": {
                         "ratio": 0.47,
                         "varNum": 4,
+                        "isModerated": true,
                         "dis": [49,138,234,144,59]
                     },
                     "TT": {
@@ -78,6 +79,7 @@
                         "dis": [38,150,352,261,135]
                     },
                     "TL": {
+                        "isModerator": true,
                         "ratio": 0.21,
                         "varNum": 4,
                         "dis": [21,135,236,170,62]
@@ -94,7 +96,7 @@
       const inputElem = document.getElementById("input");
       inputElem &&
         (inputElem.value =
-          ' { "rec": 156, "independents": { "CN": { "ratio": 0.47, "varNum": 4, "dis": [49,138,234,144,59] }, "TT": { "ratio": 0.32, "varNum": 6, "dis": [38,150,352,261,135] }, "TL": { "ratio": 0.21, "varNum": 4, "dis": [21,135,236,170,62] } }, "dependents": { "TTH": { "varNum": 4, "dis": [31,121,249,163,60] } } }');
+          ' { "rec": 312, "independents": { "CN": { "ratio": 0.47, "varNum": 4, "isModerated": true ,"dis": [98,276,468,288,118] }, "TT": { "ratio": 0.32, "varNum": 6, "dis": [76,300,704,522,270] }, "TL": { "isModerator": true, "ratio": 0.21, "varNum": 4, "dis": [42,270,472,340,124] } }, "dependents": { "TTH": { "varNum": 4, "dis": [62,242,498,326,120] } } }');
 
       function getInput() {
         const inputElem = document.getElementById("input");
@@ -281,7 +283,8 @@
             minRow.index = index;
           }
         });
-
+        if(minRow.diff>0.12)
+          return [];
         usedIndexes.push(minRow.index);
         console.log("correspondingRows",minRow);
         return minRow.value;
@@ -289,13 +292,32 @@
       function formatResult_v2(result, data) {
         const rec = data.rec;
         const cloneRs = clone(result);
+
         const weights = [];
+
+        const rawWeightData = [];
+        for(let i = 0; i < rec; i++) {
+          rawWeightData.push([]);
+        }
+
         const ratios = [];
         let independentsCount = 0;
+        let moderatorIndex = -1;
+        let moderatedIndexes = [];
         for (let label in data.independents) {
           independentsCount++;
           ratios.push(data.independents[label].ratio);
+          data.independents[label].isModerator && (moderatorIndex = independentsCount - 1)
+          data.independents[label].isModerated && (moderatedIndexes.push(independentsCount-1))
         }
+
+        console.log("moderatedIndexes",moderatedIndexes);
+        console.log("moderatorIndex",moderatorIndex)
+        /*
+          [
+
+          ]
+        */
 
         const rs = [];
         const avgValues = [];
@@ -309,17 +331,36 @@
 
         const dependentRows = [];
 
+
         cloneRs.forEach(
           (item, rsIndex) =>
             (rsIndex < independentsCount &&
               item.forEach((item, index) => {
                 rs[index].push(...item);
                 avgValues[index].push(avg(item));
-                weights[index] += ratios[rsIndex] * avg(item);
+                rawWeightData[index].push(avg(item))
               })) ||
             (rsIndex >= independentsCount && dependentRows.push(item))
         );
-        
+        console.log("rawWeightData",rawWeightData)
+
+
+        //Calculate weight with moderator
+
+         if(moderatorIndex >= 0 && moderatedIndexes.length > 0){
+           rawWeightData.forEach((data,dIndex)=>{
+              data.forEach((item,iIndex)=>{
+                if(moderatedIndexes.includes(iIndex)){
+                  weights[dIndex] += ratios[iIndex] * avg([item,data[moderatorIndex]]);
+                } 
+                else
+                {
+                  weights[dIndex] += ratios[iIndex] * item;
+                }
+              })
+           });
+         } 
+         console.log("weights",weights)
         console.log("cloneRs",cloneRs);
         console.log("dependentsRows",dependentRows)
 
@@ -389,7 +430,7 @@
         labels.push(...Object.keys(data.dependents));
         let scrnOutput = "";
         scrnOutput += labels.join(",") + "\r\n";
-        shuffledRs.forEach((item) => {
+        shuffledRs.filter(item=>item.length === labels.length).forEach((item) => {
           scrnOutput += item.join(",") + "\r\n";
         });
 
@@ -409,7 +450,7 @@
         return array.reduce((acc, item) => acc + item);
       }
       function avg(array) {
-        if (!array || !(array.length >= 0)) return 0;
+        if (!array || !(array.length > 0)) return 0;
         return array.reduce((acc, item) => acc + item) / array.length;
       }
       function pearsonCorrelation(prefs, p1, p2) {
