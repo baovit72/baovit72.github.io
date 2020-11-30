@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        textarea {
+        width: 80vw;
+        min-height: 300px;
+      }
+      * {
+        margin: 10px 10px;
+      }
+      button {
+        padding: 5px 20px;
+        background-image: url("https://www.flaticon.com/svg/static/icons/svg/3677/3677112.svg");
+        background-position: center;
+        background-size: contain;
+        width: 50px;
+        height: 50px;
+        outline: none;
+        border: none;
+        cursor: pointer;
+        border-radius: 10px;
+      }
+      body {
+        background: #3d7eaa; /* fallback for old browsers */
+        background: -webkit-linear-gradient(
+          to right,
+          #ffe47a,
+          #3d7eaa
+        ); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(
+          to right,
+          #ffe47a,
+          #3d7eaa
+        ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        background-repeat: none;
+      }
+    </style>
+</head>
+<body>
+    <center> 
+        <input type="text" id="input"/>
+        <br/>
+        <button onclick="exec();" id="submit"></button>
+        <br/>
+        <textarea id="output"></textarea>
+    </center>
+   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script>
+        var myrng = new Math.seedrandom(Date.now());
+        const inputElem = document.getElementById("input");
+            inputElem &&
+                (inputElem.value =
+                '188|1,2|8,10');
+
+        function getInput() {
+            const inputElem = document.getElementById("input");
+            const value = (inputElem && inputElem.value) || "";
+            try {
+                let sValues = value.split("|");
+                if(sValues.length === 3){
+                    const rec = +sValues[0];
+                    const points = sValues[1].split(",").map(item=>+item);
+                    const ratios = sValues[2].split(",").map(item =>+item);
+                    return {rec, points,ratios}
+                } 
+            } catch (e) { 
+            return {rec: 188, points:[1,2]};
+            }
+        }
+        function randomBetween(a, b) {
+            return (Math.abs(myrng.int32()) % (b - a)) + a;
+        }
+        function exec(){
+            const data = getInput();
+            const points = data.points;
+            const ratios = data.ratios;
+            let rs = "";
+            let totalRatio = ratios.reduce((acc, item) => acc + item);
+            for(let i = 0; i<data.rec; i++){
+
+                rs+=points[randomBetween(0,points.length)] + "\n";
+            }
+            const outputElem = document.getElementById("output");
+            outputElem &&
+                (outputElem.value =
+                rs);
+        }
+    </script>
+</body>
+</html>
