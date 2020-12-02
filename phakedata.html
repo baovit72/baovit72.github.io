@@ -60,7 +60,20 @@
       <br />
       <a id="download" target="_blank"></a>
     </center>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-VNH7TWNSX8"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
 
+      gtag("config", "G-VNH7TWNSX8");
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
     <script>
       /*
@@ -283,10 +296,9 @@
             minRow.index = index;
           }
         });
-        if(minRow.diff>0.12)
-          return [];
+        if (minRow.diff > 0.12) return [];
         usedIndexes.push(minRow.index);
-        console.log("correspondingRows",minRow);
+        console.log("correspondingRows", minRow);
         return minRow.value;
       }
       function formatResult_v2(result, data) {
@@ -296,7 +308,7 @@
         const weights = [];
 
         const rawWeightData = [];
-        for(let i = 0; i < rec; i++) {
+        for (let i = 0; i < rec; i++) {
           rawWeightData.push([]);
         }
 
@@ -307,12 +319,14 @@
         for (let label in data.independents) {
           independentsCount++;
           ratios.push(data.independents[label].ratio);
-          data.independents[label].isModerator && (moderatorIndex = independentsCount - 1)
-          data.independents[label].isModerated && (moderatedIndexes.push(independentsCount-1))
+          data.independents[label].isModerator &&
+            (moderatorIndex = independentsCount - 1);
+          data.independents[label].isModerated &&
+            moderatedIndexes.push(independentsCount - 1);
         }
 
-        console.log("moderatedIndexes",moderatedIndexes);
-        console.log("moderatorIndex",moderatorIndex)
+        console.log("moderatedIndexes", moderatedIndexes);
+        console.log("moderatorIndex", moderatorIndex);
         /*
           [
 
@@ -331,38 +345,34 @@
 
         const dependentRows = [];
 
-
         cloneRs.forEach(
           (item, rsIndex) =>
             (rsIndex < independentsCount &&
               item.forEach((item, index) => {
                 rs[index].push(...item);
                 avgValues[index].push(avg(item));
-                rawWeightData[index].push(avg(item))
+                rawWeightData[index].push(avg(item));
               })) ||
             (rsIndex >= independentsCount && dependentRows.push(item))
         );
-        console.log("rawWeightData",rawWeightData)
-
+        console.log("rawWeightData", rawWeightData);
 
         //Calculate weight with moderator
 
-          
-           rawWeightData.forEach((data,dIndex)=>{
-              data.forEach((item,iIndex)=>{
-                if(moderatorIndex >= 0 && moderatedIndexes.includes(iIndex)){
-                  weights[dIndex] += ratios[iIndex] * avg([item,data[moderatorIndex]]);
-                } 
-                else
-                {
-                  weights[dIndex] += ratios[iIndex] * item;
-                }
-              })
-           });
-           
-         console.log("weights",weights)
-        console.log("cloneRs",cloneRs);
-        console.log("dependentsRows",dependentRows)
+        rawWeightData.forEach((data, dIndex) => {
+          data.forEach((item, iIndex) => {
+            if (moderatorIndex >= 0 && moderatedIndexes.includes(iIndex)) {
+              weights[dIndex] +=
+                ratios[iIndex] * avg([item, data[moderatorIndex]]);
+            } else {
+              weights[dIndex] += ratios[iIndex] * item;
+            }
+          });
+        });
+
+        console.log("weights", weights);
+        console.log("cloneRs", cloneRs);
+        console.log("dependentsRows", dependentRows);
 
         const usedIndexesArray = [];
         for (let i = 0; i < dependentRows.length; i++) {
@@ -370,15 +380,19 @@
         }
 
         rs.forEach((item, index) => {
-          dependentRows.forEach((item,dIndex) => {
-            const corRow = getCorrespondingRow(item,weights[index],usedIndexesArray[dIndex]);
+          dependentRows.forEach((item, dIndex) => {
+            const corRow = getCorrespondingRow(
+              item,
+              weights[index],
+              usedIndexesArray[dIndex]
+            );
             avgValues[index].push(avg(corRow));
             rs[index].push(...corRow);
           });
         });
-        console.log("rs after added",rs);
-        if(rs.length === avgValues.length){
-          rs.forEach((item,index)=>item.push(...avgValues[index]));
+        console.log("rs after added", rs);
+        if (rs.length === avgValues.length) {
+          rs.forEach((item, index) => item.push(...avgValues[index]));
         }
         return rs;
       }
@@ -430,9 +444,11 @@
         labels.push(...Object.keys(data.dependents));
         let scrnOutput = "";
         scrnOutput += labels.join(",") + "\r\n";
-        shuffledRs.filter(item=>item.length === labels.length).forEach((item) => {
-          scrnOutput += item.join(",") + "\r\n";
-        });
+        shuffledRs
+          .filter((item) => item.length === labels.length)
+          .forEach((item) => {
+            scrnOutput += item.join(",") + "\r\n";
+          });
 
         const outputElem = document.getElementById("output");
         outputElem && (outputElem.value = scrnOutput);
