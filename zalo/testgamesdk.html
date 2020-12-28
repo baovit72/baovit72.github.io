@@ -5,8 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SDK Demo</title>
     <style>
-      button {
+      button,
+      textarea {
         margin-top: 15px;
+      }
+      textarea {
+        width: 90vw;
+        font-size: 20px;
       }
     </style>
   </head>
@@ -18,11 +23,9 @@
     <button onclick="testFacebook()">Test Login Facebook</button>
     <br />
     <button onclick="testGoogle()">Test Login Google</button>
-
+    <br />
+    <textarea rows="20" id="result"></textarea>
     <!-- The JS SDK Login Button -->
-
-    <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
-    </fb:login-button>
 
     <div id="status"></div>
 
@@ -35,6 +38,10 @@
     ></script>
     <script></script>
     <script>
+      const showResult = (result) => {
+        document.getElementById("result").value = result;
+      };
+
       var SDKConfigs = {
         REDIRECT_URL: "https://dev-instant.zingplay.me/static",
         APP_ID: "3761884414324280336"
@@ -72,7 +79,7 @@
           );
           ZaloGameSDK.loginFacebook(response.authResponse.accessToken).then(
             (data) => {
-              console.log(data);
+              showResult(JSON.stringify(data, null, 4));
             }
           );
         });
