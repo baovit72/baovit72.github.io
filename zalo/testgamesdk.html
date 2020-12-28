@@ -36,6 +36,17 @@
       src="https://connect.facebook.net/en_US/sdk.js"
     ></script>
     <script>
+      FB.init({
+        appId: "152763329439380",
+        cookie: true, // Enable cookies to allow the server to access the session.
+        xfbml: true, // Parse social plugins on this webpage.
+        version: "v9.0" // Use this Graph API version for this call.
+      });
+      FB.login(function (response) {
+        console.log(response);
+      });
+    </script>
+    <script>
       var SDKConfigs = {
         REDIRECT_URL: "https://dev-instant.zingplay.me/static",
         APP_ID: "3761884414324280336"
