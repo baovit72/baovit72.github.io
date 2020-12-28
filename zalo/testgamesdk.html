@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SDK Demo</title>
+    <style>
+      button {
+        margin-top: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <input type="text" id="accesstoken" placeholder="Access Token" />
+    <br />
+    <button onclick="testZalo()">Test Login Zalo</button>
+    <br />
+    <button onclick="testFacebook()">Test Login Facebook</button>
+    <br />
+    <button onclick="testGoogle()">Test Login Google</button>
+
+    <!-- The JS SDK Login Button -->
+
+    <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+    </fb:login-button>
+
+    <div id="status"></div>
+
+    <script src="https://dev-instant.zingplay.me/static/sdk/zalo-game-sdk.1.0.5.min.js"></script>
+    <!-- Load the JS SDK asynchronously -->
+
+    <script
+      async
+      defer
+      crossorigin="anonymous"
+      src="https://connect.facebook.net/en_US/sdk.js"
+    ></script>
+    <script>
+      var SDKConfigs = {
+        REDIRECT_URL: "https://dev-instant.zingplay.me/static",
+        APP_ID: "3761884414324280336"
+      };
+
+      ZaloGameSDK.initialize(SDKConfigs);
+
+      window.testZalo = () =>
+        ZaloGameSDK.loginZalo().then((data) => {
+          console.log(data);
+          var userId = data.id;
+          var userName = data.name;
+          var avatar = data.avatar;
+          var zgsk = data.zgsk; //This is Session Key, you can use this session to call Zalo API from your server to verify user information.
+
+          // Use this user's information to login for your Game.
+        });
+      const getToken = () => {
+        const tokenElem = document.getElementById("accesstoken");
+        return tokenElem && tokenElem.value;
+      };
+      window.testFacebook = () =>
+        ZaloGameSDK.loginFacebook(getToken()).then((data) => {
+          var userId = data.id;
+          var userName = data.name;
+          var avatar = data.avatar;
+          var zgsk = data.zgsk; //This is Session Key, use can this session to call Zalo API from your server to verify user information.
+
+          // Use this user's information to login for your Game.
+        });
+
+      window.testGoogle = () =>
+        ZaloGameSDK.loginGoogle(getToken()).then((data) => {
+          var userId = data.id;
+          var userName = data.name;
+          var avatar = data.avatar;
+          var zgsk = data.zgsk; //This is Session Key, use can this session to call Zalo API from your server to verify user information.
+          // Use this user's information to login for your Game.
+        });
+    </script>
+  </body>
+</html>
