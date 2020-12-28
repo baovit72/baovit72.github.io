@@ -34,6 +34,20 @@
       src="https://connect.facebook.net/en_US/sdk.js"
     ></script>
     <script>
+      function statusChangeCallback(response) {
+        // Called with the results from FB.getLoginStatus().
+        console.log("statusChangeCallback");
+        console.log(response); // The current login status of the person.
+      }
+
+      function checkLoginState() {
+        // Called when a person is finished with the Login Button.
+        FB.getLoginStatus(function (response) {
+          // See the onlogin handler
+          statusChangeCallback(response);
+        });
+      }
+
       FB.init({
         appId: "152763329439380",
         cookie: true, // Enable cookies to allow the server to access the session.
