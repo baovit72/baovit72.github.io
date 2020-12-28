@@ -3,6 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta
+      name="google-signin-client_id"
+      content="YOUR_CLIENT_ID.apps.googleusercontent.com"
+    />
+
     <title>SDK Demo</title>
     <style>
       button,
@@ -36,10 +42,16 @@
       crossorigin="anonymous"
       src="https://connect.facebook.net/en_US/sdk.js"
     ></script>
-    <script></script>
+
+    <script src="https://apis.google.com/js/platform.js"></script>
+
     <script>
       const showResult = (result) => {
-        document.getElementById("result").value = result;
+        document.getElementById("result").value = JSON.stringify(
+          result,
+          null,
+          4
+        );
       };
 
       var SDKConfigs = {
@@ -58,13 +70,7 @@
 
       window.testZalo = () =>
         ZaloGameSDK.loginZalo().then((data) => {
-          console.log(data);
-          var userId = data.id;
-          var userName = data.name;
-          var avatar = data.avatar;
-          var zgsk = data.zgsk; //This is Session Key, you can use this session to call Zalo API from your server to verify user information.
-
-          // Use this user's information to login for your Game.
+          showResult(data);
         });
       const getToken = () => {
         const tokenElem = document.getElementById("accesstoken");
@@ -79,7 +85,7 @@
           );
           ZaloGameSDK.loginFacebook(response.authResponse.accessToken).then(
             (data) => {
-              showResult(JSON.stringify(data, null, 4));
+              showResult(data);
             }
           );
         });
@@ -87,11 +93,7 @@
 
       window.testGoogle = () =>
         ZaloGameSDK.loginGoogle(getToken()).then((data) => {
-          var userId = data.id;
-          var userName = data.name;
-          var avatar = data.avatar;
-          var zgsk = data.zgsk; //This is Session Key, use can this session to call Zalo API from your server to verify user information.
-          // Use this user's information to login for your Game.
+          showResult(data);
         });
     </script>
   </body>
