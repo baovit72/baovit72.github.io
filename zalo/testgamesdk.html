@@ -33,31 +33,7 @@
       crossorigin="anonymous"
       src="https://connect.facebook.net/en_US/sdk.js"
     ></script>
-    <script>
-      function statusChangeCallback(response) {
-        // Called with the results from FB.getLoginStatus().
-        console.log("statusChangeCallback");
-        console.log(response); // The current login status of the person.
-      }
-
-      function checkLoginState() {
-        // Called when a person is finished with the Login Button.
-        FB.getLoginStatus(function (response) {
-          // See the onlogin handler
-          statusChangeCallback(response);
-        });
-      }
-
-      FB.init({
-        appId: "152763329439380",
-        cookie: true, // Enable cookies to allow the server to access the session.
-        xfbml: true, // Parse social plugins on this webpage.
-        version: "v9.0" // Use this Graph API version for this call.
-      });
-      FB.login(function (response) {
-        console.log(response);
-      });
-    </script>
+    <script></script>
     <script>
       var SDKConfigs = {
         REDIRECT_URL: "https://dev-instant.zingplay.me/static",
@@ -65,6 +41,13 @@
       };
 
       ZaloGameSDK.initialize(SDKConfigs);
+
+      FB.init({
+        appId: "152763329439380",
+        cookie: true, // Enable cookies to allow the server to access the session.
+        xfbml: true, // Parse social plugins on this webpage.
+        version: "v9.0" // Use this Graph API version for this call.
+      });
 
       window.testZalo = () =>
         ZaloGameSDK.loginZalo().then((data) => {
@@ -80,15 +63,20 @@
         const tokenElem = document.getElementById("accesstoken");
         return tokenElem && tokenElem.value;
       };
-      window.testFacebook = () =>
-        ZaloGameSDK.loginFacebook(getToken()).then((data) => {
-          var userId = data.id;
-          var userName = data.name;
-          var avatar = data.avatar;
-          var zgsk = data.zgsk; //This is Session Key, use can this session to call Zalo API from your server to verify user information.
-
-          // Use this user's information to login for your Game.
+      window.testFacebook = () => {
+        FB.login(function (response) {
+          console.log(response);
+          console.log(
+            "response.authResponse.accessToken",
+            response.authResponse.accessToken
+          );
+          ZaloGameSDK.loginFacebook(response.authResponse.accessToken).then(
+            (data) => {
+              console.log(data);
+            }
+          );
         });
+      };
 
       window.testGoogle = () =>
         ZaloGameSDK.loginGoogle(getToken()).then((data) => {
