@@ -16,10 +16,9 @@ function copyToClipboard(element) {
 }
 
 
-function makeUnderlineDiv(){
+function makeUnderlineDiv() {
     const divElem = document.createElement("div");
     divElem.innerText = "---------------------------------------------------------------";
-    divElem.onclick = () => copyToClipboard(divElem)
     return divElem;
 }
 
@@ -44,7 +43,7 @@ function makeIt() {
     const contentBlocks = content.split("<split>");
     console.log(contentBlocks)
     const resultElem = document.getElementById("result");
-    resultElem.innerHTML  = "";
+    resultElem.innerHTML = "";
     contentBlocks.forEach(
         block => {
             resultElem.appendChild(makeCopiableDivWithContent(block))
