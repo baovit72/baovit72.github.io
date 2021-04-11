@@ -1,7 +1,7 @@
 
 
 const fieldIds = ["cusname", "projname", "demotime", "guaranteedays", "phone"];
-const template = 'Chào <cusname>,\nKBA Solutions đã thực hiện nhiều dự án <projname> và có thể đáp ứng tốt yêu cầu của bạn.\n\nRất mong được hợp tác với bạn.<split>Đầu tiên, KBA Solutions sẽ trao đổi chi tiết về yêu cầu với bạn.\nSau đó, bên mình sẽ tư vấn giải pháp tối ưu nhất và bàn giao demo trong vòng <demotime> kể từ lúc thống nhất.\n\nCác sản phẩm <projname> của KBA Solutions được bảo hành <guaranteedays> với các lỗi phát sinh.\n<split>Chào bạn,\nKBA Solutions đã tìm hiểu yêu cầu của bạn và có thể đáp ứng tốt yêu cầu này.\n\nBạn có thể cung cấp Zalo/Skype/SĐT hoặc phương thức liên hệ tiện lợi cho bạn để bên mình liên hệ nhé.\nBạn có thể liên hệ với bên mình thông qua Zalo: <phone>'
+const template = 'Chào <cusname>,\nKBA Solutions đã thực hiện nhiều dự án <projname> và có thể đáp ứng tốt yêu cầu của bạn.\nRất mong được hợp tác với bạn.<split>Đầu tiên, KBA Solutions sẽ trao đổi chi tiết về yêu cầu với bạn.\nSau đó, bên mình sẽ tư vấn giải pháp tối ưu nhất và bàn giao demo trong vòng <demotime> kể từ lúc thống nhất.\n\nCác sản phẩm <projname> của KBA Solutions được bảo hành <guaranteedays> với các lỗi phát sinh.\n<split>Chào bạn,\nKBA Solutions đã tìm hiểu yêu cầu của bạn và có thể đáp ứng tốt yêu cầu này.\n\nBạn có thể cung cấp Zalo/Skype/SĐT hoặc phương thức liên hệ tiện lợi cho bạn để bên mình liên hệ nhé.\nBạn có thể liên hệ với bên mình thông qua Zalo: <phone>'
 
 
 function copyToClipboard(element) {
@@ -13,6 +13,14 @@ function copyToClipboard(element) {
     window.getSelection().removeAllRanges();// to deselect
     element.style.backgroundColor = "blue";
     element.style.color = "white";
+}
+
+
+function makeUnderlineDiv(){
+    const divElem = document.createElement("div");
+    divElem.innerText = "---------------------------------------------------------------";
+    divElem.onclick = () => copyToClipboard(divElem)
+    return divElem;
 }
 
 function makeCopiableDivWithContent(content) {
@@ -39,6 +47,7 @@ function makeIt() {
     contentBlocks.forEach(
         block => {
             resultElem.appendChild(makeCopiableDivWithContent(block))
+            resultElem.appendChild(makeUnderlineDiv());
         }
     )
 
