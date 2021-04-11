@@ -44,6 +44,7 @@ function makeIt() {
     const contentBlocks = content.split("<split>");
     console.log(contentBlocks)
     const resultElem = document.getElementById("result");
+    resultElem.innerHTML  = "";
     contentBlocks.forEach(
         block => {
             resultElem.appendChild(makeCopiableDivWithContent(block))
