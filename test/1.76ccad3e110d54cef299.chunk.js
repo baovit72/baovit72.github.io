@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[1],{"181bc2249e8d27264219":function(e,n,c){"use strict";var t;var i,o,r=c("1c63112c967e33335e26").b.h1(t||(i=["\n  font-size: 2em;\n  margin-bottom: 0.25em;\n"],o||(o=i.slice(0)),t=Object.freeze(Object.defineProperties(i,{raw:{value:Object.freeze(o)}}))));n.a=r}}]);
